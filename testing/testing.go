@@ -8,9 +8,9 @@ import (
 )
 
 type tables struct {
-	ID       int    `db:"id"`
+	// ID       int    `db:"id"`
 	TypeStr  string `db:"type"`
-	name     string `db:"name"`
+	Name     string `db:"name"`
 	TblName  string `db:"tbl_name"`
 	Rootpage int    `db:"rootpage"`
 	SQL      string `db:"sql"`

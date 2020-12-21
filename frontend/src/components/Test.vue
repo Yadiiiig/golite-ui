@@ -1,24 +1,25 @@
 <template>
-  <div class="container">
-    <h1>{{ counter }}</h1>
-    <a @click="countUp">+</a>
-  </div>
+	<div class="container">
+		<h1>{{ counter }}</h1>
+		<a @click="countUp">+</a>
+	</div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      counter: 0
-    };
-  },
-  methods: {
-    countUp() {
-      window.backend.count(this.counter).then(result => {
-        this.counter = result;
-      });
-    }
-  }
+	
+	data() {
+		return {
+			counter: 0
+		};
+  	},
+	methods: {
+		countUp() {
+		window.backend.count(this.counter).then(result => {
+			this.counter = result;
+		});
+		}
+	}
 };
 </script>
 

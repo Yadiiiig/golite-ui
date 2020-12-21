@@ -1,12 +1,22 @@
 <template>
-    <nav class="flex items-center justify-between flex-wrap bg-teal-500 p-6">
-        <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-        <div class="text-sm lg:flex-grow">
-            <div @click="trigger" class="trigger">Click me</div>
-            <input type="file" ref="fileInput"/>
-        </div>
-        </div>
-    </nav>
+    <div class="center examplex">
+        <vs-navbar color="#1c1e26" text-white square center-collapsed v-model="active">
+            <template #left>
+                <vs-navbar-item :active="active == 'guide'" id="guide">
+                    Open database
+                </vs-navbar-item>
+                <vs-navbar-item :active="active == 'docs'" id="docs">
+                    New database
+                </vs-navbar-item>
+                <vs-navbar-item :active="active == 'components'" id="components">
+                    Save changes
+                </vs-navbar-item>
+                <vs-navbar-item :active="active == 'license'" id="license">
+                    Console
+                </vs-navbar-item>
+            </template>
+        </vs-navbar>
+    </div>
 </template>
 
 <script>
