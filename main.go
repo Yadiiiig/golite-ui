@@ -20,12 +20,12 @@ func main() {
 	css := mewn.String("./frontend/dist/app.css")
 
 	app := wails.CreateApp(&wails.AppConfig{
-		Width:  1024,
-		Height: 768,
-		Title:  "GoLite",
-		JS:     js,
-		CSS:    css,
-		Colour: "#131313",
+
+		Title:     "GoLite",
+		JS:        js,
+		CSS:       css,
+		Colour:    "#1c1e26",
+		Resizable: true,
 	})
 	app.Bind(selectDatabase)
 	app.Run()

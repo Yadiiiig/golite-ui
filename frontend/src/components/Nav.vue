@@ -1,41 +1,96 @@
 <template>
-    <div class="center examplex">
-        <vs-navbar color="#1c1e26" text-white square center-collapsed>
-            <template #left>
-                <vs-navbar-item v-on:click="select">
-                    Open file
-                </vs-navbar-item>
-                <vs-navbar-item>
-                    New database
-                </vs-navbar-item>
-                <vs-navbar-item>
-                    Save changes
-                </vs-navbar-item>
-                <vs-navbar-item>
-                    Console
-                </vs-navbar-item>
-            </template>
-        </vs-navbar>
+    <div>
+		<Menubar :model="items" />
     </div>
 </template>
+
 
 <script>
     export default {
         name: 'Nav',
         data() {
             return {
-                tables: null
+                nodes: [],
+				items: [
+                {
+                   label:'Database',
+                   icon:'pi pi-fw pi-folder-open',
+                   items:[{
+                        label:'Open',
+                        icon:'pi pi-fw pi-file',
+						command: () => {
+							this.select();
+						}
+                    },
+                    {
+                         label:'Create',
+                         icon:'pi pi-fw pi-file'
+                    }]
+                },
+                {
+                   label:'Edit',
+                   icon:'pi pi-fw pi-pencil',
+                   items:[
+                   ]
+                },
+                {
+                   label:'Quit',
+                   icon:'pi pi-fw pi-power-off'
+                }
+             ]
             };
   	    },
     	methods: {
             select() {
-                window.backend.selectDatabase().then(result => {this.$emit('tableResult', result)
-                console.log("hey")});
+                window.backend.selectDatabase().then(result => {
+                    for (var i = 0; i < result.length; i++) {
+                        this.nodes.push({
+                            key: String(i),
+                            label: result[i].Name,
+                            data: 'Name',
+                            icon: 'pi pi-fw pi-file',
+                            style: "margin:-3px; margin-left: 1px; margin-top: 1px; padding:0; text-decoration: none; text-decoration: underline;",
+                            children: [
+                                {
+                                key: String(i) + '-0',
+                                label: result[i].Rootpage,
+                                data: 'Rootpage',
+                                icon: 'pi pi-fw pi-cog',
+                                style: "margin:-4px; padding:0;"
+                                },
+                                {
+                                key: String(i) + '-1',
+                                label: result[i].TblName,
+                                data: 'TblName',
+                                icon: 'pi pi-fw pi-cog',
+                                style: "margin:-4px; padding:0;"
+                                },
+                                {
+                                key: String(i) + '-2',
+                                label: 'SQL',
+                                data: 'SQL',
+                                icon: 'pi pi-fw pi-cog',
+                                style: "margin:-4px; padding:0;",
+                                children: [
+                                    {
+                                    key: String(i) + '-1-0', 
+                                    label: result[i].SQL,
+                                    data: 'Query',
+                                    style: "margin:-4px; padding:0;font-size:12px;"
+                                    }
+                                ]
+                                }
+                            ]
+                        })
+                    }
+                this.$emit('tableResult', this.nodes)
+                })
             },
-            getTables() {
-                this.$emit('tables', this.tables);
+
+            test() {
+                console.log("hey")
             }
-	    }
+        }
     }
 </script>
 
