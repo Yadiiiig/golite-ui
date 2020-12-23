@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 
 	"github.com/harry1453/go-common-file-dialog/cfd"
@@ -28,6 +29,8 @@ func main() {
 		Resizable: true,
 	})
 	app.Bind(selectDatabase)
+	app.Bind(selectTable)
+	app.Bind(getHeaders)
 	app.Run()
 }
 
@@ -48,6 +51,39 @@ func selectDatabase() []tables {
 
 	db = connectDatabase(result)
 	return getTables(db)
+}
+
+type headers struct {
+	Cid       string         `db:"cid"`
+	Name      string         `db:"name"`
+	Type      string         `db:"type"`
+	NotNull   int            `db:"notnull"`
+	DfltValue sql.NullString `db:"dflt_value"`
+	Pk        int            `db:"pk"`
+}
+
+func getHeaders(tableName string) []headers {
+	results := []headers{}
+	query := "PRAGMA table_info(" + tableName + ")"
+
+	errQuery := db.Select(&results, query)
+	if errQuery != nil {
+		fmt.Println(errQuery)
+	}
+
+	return results
+}
+
+func selectTable(tableName string) []string {
+	results := []string{}
+	errQuery := db.Select(&results, "SELECT * FROM ?", tableName)
+	if errQuery != nil {
+		fmt.Println(errQuery)
+	}
+	fmt.Println("#############################")
+	fmt.Println(tableName)
+	fmt.Println(results)
+	return results
 }
 
 func connectDatabase(path string) *sqlx.DB {

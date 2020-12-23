@@ -4,7 +4,7 @@
 		<br>
 		<TabView>
 			<TabPanel header="Structure" :active.sync="active[0]">
-				<TableView :tabledata="tables" />
+				<TableView :tabledata="tables"  @headerResult="headersChanged($event)" />
 			</TabPanel>
 			<TabPanel header="Data" :active.sync="active[1]">
 				Content II
@@ -29,6 +29,7 @@ export default {
 		return {
 			selected: null,
 			tables: null,
+			headers: null,
 			active: [true, false, false]
 		}
 	},
@@ -36,6 +37,10 @@ export default {
 		tablesChanged(e) {
 			this.tables = e;
 			//console.log(JSON.stringify(this.tables))
+		},
+		headersChanged(e) {
+			this.headers = e;
+			console.log(JSON.stringify(this.headers))
 		},
 		activate(index) {
             let activeArray = [...this.active];

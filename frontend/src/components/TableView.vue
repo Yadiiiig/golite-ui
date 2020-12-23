@@ -22,6 +22,13 @@ export default {
 	methods: {
 		onNodeSelect(node) {
             console.log(node.label);
+			window.backend.getHeaders(node.label).then(result => {
+				console.log(result)
+				this.$emit('headerResult', result)
+			}) 
+			//  window.backend.selectTable(node.label).then(result => {
+			// 	console.log(result)
+			//  }) 
         },
 	}
 }
