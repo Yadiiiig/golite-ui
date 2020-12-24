@@ -49,7 +49,7 @@
                             label: result[i].Name,
                             data: 'Name',
                             icon: 'pi pi-fw pi-file',
-                            style: "margin:-3px; margin-left: 1px; margin-top: 1px; padding:0; text-decoration: none; text-decoration: underline;",
+                            style: "margin:-3px; margin-left: 1px; margin-top: 1px; padding:0; text-decoration: none;",
                             children: [
                                 {
                                 key: String(i) + '-0',

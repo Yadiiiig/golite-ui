@@ -2,7 +2,6 @@
 	<div>
 			<Panel header="Tables">
 				<Tree v-if="tabledata !== null" :value="tabledata" selectionMode="single" @node-select="onNodeSelect"></Tree>
-
 				<div v-if="tabledata === null" class="p-mb-3 p-text-light">No database selected.</div>
 			</Panel>
 		
@@ -12,7 +11,7 @@
 <script>
 export default {
 	name: 'TableView',
-	props: ["tabledata"],
+	props: ["tabledata", "changeTab"],
 	data() {
       	return {
           
@@ -20,17 +19,14 @@ export default {
   	},
 	methods: {
 		onNodeSelect(node) {
-            console.log(node.label);
 			window.backend.getHeaders(node.label).then(result => {
 				this.$emit('headerResult', result)
 			}) 
 			window.backend.selectTable(node.label).then(result => {
-				console.log(result)
 				this.$emit('tableResult', JSON.parse(result))
 			}) 
-			//  window.backend.selectTable(node.label).then(result => {
-			// 	console.log(result)
-			//  }) 
+			this.$emit('tableName', node.label)
+			this.changeTab(1);
         },
 	}
 }

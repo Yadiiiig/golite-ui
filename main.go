@@ -108,7 +108,6 @@ func selectTable(tableName string) string {
 	}
 
 	return string(finalResult)
-
 }
 
 func connectDatabase(path string) *sqlx.DB {

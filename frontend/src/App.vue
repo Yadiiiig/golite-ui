@@ -4,10 +4,10 @@
 		<br>
 		<TabView>
 			<TabPanel header="Structure" :active.sync="active[0]">
-				<TableView :tabledata="tables"  @headerResult="headersChanged($event)" @tableResult="tablesResultChanged($event)" />
+				<TableView :tabledata="tables"  @headerResult="headersChanged($event)" @tableResult="tablesResultChanged($event)" @tableName="getTableName($event)" :changeTab="activate" />
 			</TabPanel>
 			<TabPanel header="Data" :active.sync="active[1]">
-				<Data :fields="headers" :rows="tablesValues" />
+				<Data :fields="headers" :rows="tablesValues" :name="tableName" />
 			</TabPanel>
 			<TabPanel header="SQL-Query" :active.sync="active[2]">
 				Content III
@@ -33,21 +33,22 @@ export default {
 			tables: null,
 			headers: null,
 			tablesValues: null,
+			tableName: null,
 			active: [true, false, false]
 		}
 	},
 	methods: {
 		tablesChanged(e) {
 			this.tables = e;
-			//console.log(JSON.stringify(this.tables))
 		},
 		headersChanged(e) {
 			this.headers = e;
-			//console.log(JSON.stringify(this.headers))
 		},
 		tablesResultChanged(e) {
 			this.tablesValues = e;
-			//console.log(JSON.stringify(this.tablesValues))
+		},
+		getTableName(e) {
+			this.tableName = e;
 		},
 		activate(index) {
             let activeArray = [...this.active];
