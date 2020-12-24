@@ -1,11 +1,8 @@
 <template>
 	<div>
-		<h3>Expand Mode</h3>
-        <DataTable :value="products" :resizableColumns="true" columnResizeMode="expand" class="p-datatable-gridlines">
-            <Column field="code" header="Code"></Column>
-            <Column field="name" header="Name"></Column>
-            <Column field="category" header="Category"></Column>
-            <Column field="quantity" header="Quantity"></Column>
+		<h3>Table data</h3>
+        <DataTable :value="rows" :resizableColumns="true" class="p-datatable-responsive" :paginator="true" :rows="10">
+            <Column v-for="(item, index) in fields" :key=index :field="item.Name" :header="item.Name"></Column>
         </DataTable>	
 	</div>
 </template>
@@ -27,6 +24,5 @@ export default {
 			 }) 
         },
 	},
-    mounted
 }
 </script>

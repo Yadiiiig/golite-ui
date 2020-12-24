@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
@@ -30,16 +31,48 @@ func main() {
 		Pk        int            `db:"pk"`
 	}
 
-	results := []headers{}
-	tableName := "albums"
-	query := "PRAGMA table_info(" + tableName + ")"
+	// results := []headers{}
+	// tableName := "albums"
+	// query := "PRAGMA table_info(" + tableName + ")"
 
-	errQuery := db.Select(&results, query)
-	if errQuery != nil {
-		fmt.Println(errQuery)
+	// errQuery := db.Select(&results, query)
+	// if errQuery != nil {
+	// 	fmt.Println(errQuery)
+	// }
+
+	// fmt.Println(results)
+	query := "SELECT * FROM albums"
+	rows, err := db.Query(query)
+	if err != nil {
+		panic(err)
+	}
+	columns, err := rows.Columns()
+	if err != nil {
+		panic(err)
 	}
 
-	fmt.Println(results)
+	result := make([]map[string]interface{}, 0)
+	data := make([]interface{}, len(columns))
+	for rows.Next() {
+		colData := make(map[string]interface{}, len(columns))
+		for i := range data {
+			data[i] = new(interface{})
+		}
+		if err := rows.Scan(data...); err != nil {
+			panic(err)
+		}
+		for i, col := range columns {
+			colData[col] = *data[i].(*interface{})
+		}
+		result = append(result, colData)
+	}
+
+	//fmt.Println(result)
+	finalResult, err := json.Marshal(result)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(string(finalResult))
 
 	// test := "albums"
 	// query := "SELECT * FROM " + test

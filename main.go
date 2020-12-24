@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 
 	"github.com/harry1453/go-common-file-dialog/cfd"
@@ -74,16 +75,40 @@ func getHeaders(tableName string) []headers {
 	return results
 }
 
-func selectTable(tableName string) []string {
-	results := []string{}
-	errQuery := db.Select(&results, "SELECT * FROM ?", tableName)
-	if errQuery != nil {
-		fmt.Println(errQuery)
+func selectTable(tableName string) string {
+	query := "SELECT * FROM " + tableName
+	rows, err := db.Query(query)
+	if err != nil {
+		fmt.Println(err)
 	}
-	fmt.Println("#############################")
-	fmt.Println(tableName)
-	fmt.Println(results)
-	return results
+	columns, err := rows.Columns()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	result := make([]map[string]interface{}, 0)
+	data := make([]interface{}, len(columns))
+	for rows.Next() {
+		colData := make(map[string]interface{}, len(columns))
+		for i := range data {
+			data[i] = new(interface{})
+		}
+		if err := rows.Scan(data...); err != nil {
+			fmt.Println(err)
+		}
+		for i, col := range columns {
+			colData[col] = *data[i].(*interface{})
+		}
+		result = append(result, colData)
+	}
+
+	finalResult, err := json.Marshal(result)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return string(finalResult)
+
 }
 
 func connectDatabase(path string) *sqlx.DB {

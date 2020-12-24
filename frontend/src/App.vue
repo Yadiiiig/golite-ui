@@ -4,10 +4,10 @@
 		<br>
 		<TabView>
 			<TabPanel header="Structure" :active.sync="active[0]">
-				<TableView :tabledata="tables"  @headerResult="headersChanged($event)" />
+				<TableView :tabledata="tables"  @headerResult="headersChanged($event)" @tableResult="tablesResultChanged($event)" />
 			</TabPanel>
 			<TabPanel header="Data" :active.sync="active[1]">
-				Content II
+				<Data :fields="headers" :rows="tablesValues" />
 			</TabPanel>
 			<TabPanel header="SQL-Query" :active.sync="active[2]">
 				Content III
@@ -18,18 +18,21 @@
 <script>
 import Nav from "./components/Nav.vue";
 import TableView from "./components/TableView.vue";
+import Data from "./components/Data.vue";
 
 export default {
 	name: "app",
 	components: {
 		Nav,
-		TableView
+		TableView,
+		Data
 	},
 	data() {
 		return {
 			selected: null,
 			tables: null,
 			headers: null,
+			tablesValues: null,
 			active: [true, false, false]
 		}
 	},
@@ -40,7 +43,11 @@ export default {
 		},
 		headersChanged(e) {
 			this.headers = e;
-			console.log(JSON.stringify(this.headers))
+			//console.log(JSON.stringify(this.headers))
+		},
+		tablesResultChanged(e) {
+			this.tablesValues = e;
+			//console.log(JSON.stringify(this.tablesValues))
 		},
 		activate(index) {
             let activeArray = [...this.active];

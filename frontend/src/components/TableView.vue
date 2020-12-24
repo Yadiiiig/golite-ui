@@ -1,6 +1,5 @@
 <template>
 	<div>
-		
 			<Panel header="Tables">
 				<Tree v-if="tabledata !== null" :value="tabledata" selectionMode="single" @node-select="onNodeSelect"></Tree>
 
@@ -23,8 +22,11 @@ export default {
 		onNodeSelect(node) {
             console.log(node.label);
 			window.backend.getHeaders(node.label).then(result => {
-				console.log(result)
 				this.$emit('headerResult', result)
+			}) 
+			window.backend.selectTable(node.label).then(result => {
+				console.log(result)
+				this.$emit('tableResult', JSON.parse(result))
 			}) 
 			//  window.backend.selectTable(node.label).then(result => {
 			// 	console.log(result)
