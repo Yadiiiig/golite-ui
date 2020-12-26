@@ -32,7 +32,49 @@ func main() {
 	app.Bind(selectDatabase)
 	app.Bind(selectTable)
 	app.Bind(getHeaders)
+	app.Bind(runQuery)
 	app.Run()
+}
+
+func runQuery(query string) interface{} {
+	type queryStruct struct {
+		Columns []string
+		Data    string
+	}
+
+	rows, err := db.Query(query)
+	if err != nil {
+		fmt.Println(err)
+	}
+	columns, err := rows.Columns()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	result := make([]map[string]interface{}, 0)
+	data := make([]interface{}, len(columns))
+	for rows.Next() {
+		colData := make(map[string]interface{}, len(columns))
+		for i := range data {
+			data[i] = new(interface{})
+		}
+		if err := rows.Scan(data...); err != nil {
+			fmt.Println(err)
+		}
+		for i, col := range columns {
+			colData[col] = *data[i].(*interface{})
+		}
+		result = append(result, colData)
+	}
+
+	finalResult, err := json.Marshal(result)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	results := queryStruct{columns, string(finalResult)}
+
+	return results
 }
 
 func selectDatabase() []tables {
@@ -75,7 +117,12 @@ func getHeaders(tableName string) []headers {
 	return results
 }
 
-func selectTable(tableName string) string {
+func selectTable(tableName string) interface{} {
+	type queryStruct struct {
+		Columns []string
+		Data    string
+	}
+
 	query := "SELECT * FROM " + tableName
 	rows, err := db.Query(query)
 	if err != nil {
@@ -107,7 +154,9 @@ func selectTable(tableName string) string {
 		fmt.Println(err)
 	}
 
-	return string(finalResult)
+	results := queryStruct{columns, string(finalResult)}
+
+	return results
 }
 
 func connectDatabase(path string) *sqlx.DB {

@@ -10,7 +10,7 @@
 				<Data :fields="headers" :rows="tablesValues" :name="tableName" />
 			</TabPanel>
 			<TabPanel header="SQL-Query" :active.sync="active[2]">
-				Content III
+				<SQLEditor />
 			</TabPanel>
 		</TabView>
 	</div>
@@ -19,13 +19,15 @@
 import Nav from "./components/Nav.vue";
 import TableView from "./components/TableView.vue";
 import Data from "./components/Data.vue";
+import SQLEditor from "./components/SQLEditor.vue";
 
 export default {
 	name: "app",
 	components: {
 		Nav,
 		TableView,
-		Data
+		Data,
+		SQLEditor
 	},
 	data() {
 		return {

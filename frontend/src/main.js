@@ -15,6 +15,8 @@ import Panel from 'primevue/panel';
 import Tree from 'primevue/tree';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
+import Textarea from 'primevue/textarea';
+import Button from 'primevue/button';
 
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
@@ -29,6 +31,8 @@ Vue.component('Panel', Panel);
 Vue.component('Tree', Tree);
 Vue.component('TabView', TabView);
 Vue.component('TabPanel', TabPanel);
+Vue.component('Textarea', Textarea);
+Vue.component('Button', Button);
 
 Wails.Init(() => {
 	new Vue({
