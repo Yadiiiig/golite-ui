@@ -17,6 +17,7 @@ import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import Textarea from 'primevue/textarea';
 import Button from 'primevue/button';
+import OverlayPanel from 'primevue/overlaypanel';
 
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
@@ -33,6 +34,7 @@ Vue.component('TabView', TabView);
 Vue.component('TabPanel', TabPanel);
 Vue.component('Textarea', Textarea);
 Vue.component('Button', Button);
+Vue.component('OverlayPanel', OverlayPanel);
 
 Wails.Init(() => {
 	new Vue({
