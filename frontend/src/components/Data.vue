@@ -3,8 +3,12 @@
 		<Panel header="Data">
 			<div v-if="name !== null">
 				<h3>Table: {{ name }}</h3>
-				<DataTable :value="rows" :resizableColumns="true" class="p-datatable-responsive" :paginator="true" :rows="10">
-					<Column v-for="(item, index) in fields" :key=index :field="item" :header="item" sortable></Column>
+				<DataTable :value="rows" editMode="cell" :resizableColumns="true" class="p-datatable-responsive editable-cells-table" :paginator="true" :rows="10">
+					<Column v-for="(item, index) in fields" :key=index :field="item" :header="item" sortable>
+						<template #editor="slotProps">
+            				<InputText v-model="slotProps.data[slotProps.column.props.field]" />
+        				</template>
+					</Column>
 				</DataTable>
 			</div>
 			<div v-else class="p-mb-3 p-text-light">No database selected.</div>

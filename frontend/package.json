@@ -10,6 +10,7 @@
   "dependencies": {
     "@wailsapp/runtime": "^1.0.10",
     "core-js": "^3.6.4",
+    "primeflex": "^2.0.0",
     "primeicons": "^4.1.0",
     "primevue": "^2.0.0",
     "regenerator-runtime": "^0.13.3",

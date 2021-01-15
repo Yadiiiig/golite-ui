@@ -78,7 +78,7 @@ export default {
 	},
 	data() {
       	return {
-            query:"",
+            query: "",
             headers: null,
             tablesValues: null,
             queryDone: false
@@ -115,3 +115,5 @@ textarea {
     max-width:95%;
     }
 </style>
+
+

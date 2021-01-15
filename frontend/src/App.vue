@@ -12,6 +12,9 @@
 			<TabPanel header="SQL-Query" :active.sync="active[2]">
 				<SQLEditor />
 			</TabPanel>
+			<TabPanel header="Create Table" :active.sync="active[3]">
+				<CreateTable />
+			</TabPanel>
 		</TabView>
 	</div>
 </template>
@@ -20,6 +23,7 @@ import Nav from "./components/Nav.vue";
 import TableView from "./components/TableView.vue";
 import Data from "./components/Data.vue";
 import SQLEditor from "./components/SQLEditor.vue";
+import CreateTable from "./components/CreateTable.vue";
 
 export default {
 	name: "app",
@@ -27,7 +31,8 @@ export default {
 		Nav,
 		TableView,
 		Data,
-		SQLEditor
+		SQLEditor,
+		CreateTable
 	},
 	data() {
 		return {

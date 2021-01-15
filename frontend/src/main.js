@@ -18,6 +18,11 @@ import TabPanel from 'primevue/tabpanel';
 import Textarea from 'primevue/textarea';
 import Button from 'primevue/button';
 import OverlayPanel from 'primevue/overlaypanel';
+import InputText from 'primevue/inputtext';
+import Dropdown from 'primevue/dropdown';
+import SelectButton from 'primevue/selectbutton';
+import 'primeflex/primeflex.css';
+
 
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
@@ -35,6 +40,9 @@ Vue.component('TabPanel', TabPanel);
 Vue.component('Textarea', Textarea);
 Vue.component('Button', Button);
 Vue.component('OverlayPanel', OverlayPanel);
+Vue.component('InputText', InputText);
+Vue.component('Dropdown', Dropdown);
+Vue.component('SelectButton', SelectButton);
 
 Wails.Init(() => {
 	new Vue({
