@@ -69,12 +69,18 @@ export default {
 </script>
 
 <style>
-	html, body {
-		height: 100%;
-		margin: 0;
-		padding: 0;
-		background-color: '#1c1e26';
+	html,
+	body {
+	height: 100%;
+	width: 100%;
 	}
+
+	body {
+	padding: 0px;
+	margin: 0px;
+	background-color: '#1c1e26';
+	}
+
 	#app {
 		display: flex;
 		flex-direction: column;
