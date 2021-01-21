@@ -21,6 +21,7 @@ import OverlayPanel from 'primevue/overlaypanel';
 import InputText from 'primevue/inputtext';
 import Dropdown from 'primevue/dropdown';
 import SelectButton from 'primevue/selectbutton';
+import Listbox from 'primevue/listbox';
 import 'primeflex/primeflex.css';
 
 
@@ -43,6 +44,7 @@ Vue.component('OverlayPanel', OverlayPanel);
 Vue.component('InputText', InputText);
 Vue.component('Dropdown', Dropdown);
 Vue.component('SelectButton', SelectButton);
+Vue.component('Listbox', Listbox);
 
 Wails.Init(() => {
 	new Vue({

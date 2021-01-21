@@ -33,6 +33,8 @@ func main() {
 	app.Bind(selectTable)
 	app.Bind(getHeaders)
 	app.Bind(runQuery)
+	app.Bind(getTableInfo)
+	app.Bind(closeDatabase)
 	app.Run()
 }
 
@@ -77,6 +79,11 @@ func runQuery(query string) interface{} {
 	return results
 }
 
+// type selectDatabaseResult struct {
+// 	Tables []tables
+// 	Info []tableInfo
+// }
+
 func selectDatabase() []tables {
 	result, err := cfdutil.ShowOpenFileDialog(cfd.DialogConfig{
 		Title: "Open a database file",
@@ -93,6 +100,8 @@ func selectDatabase() []tables {
 	}
 
 	db = connectDatabase(result)
+	// returnResult := []selectDatabaseResult{getTables(db)}
+
 	return getTables(db)
 }
 
@@ -160,12 +169,23 @@ func selectTable(tableName string) interface{} {
 }
 
 func connectDatabase(path string) *sqlx.DB {
+	var dbCheck *sqlx.DB
+	if dbCheck != db {
+		db.Close()
+	}
 	dbConnection, err := sqlx.Connect("sqlite3", path)
 
 	if err != nil {
 		fmt.Println(err)
 	}
 	return dbConnection
+}
+
+func closeDatabase() {
+	var dbCheck *sqlx.DB
+	if dbCheck != db {
+		db.Close()
+	}
 }
 
 type tables struct {
@@ -183,5 +203,27 @@ func getTables(connection *sqlx.DB) []tables {
 		fmt.Println(errQuery)
 	}
 
+	return results
+}
+
+type tableInfo struct {
+	Cid       int            `db:"cid"`
+	Name      string         `db:"name"`
+	Type      string         `db:"type"`
+	NotNull   bool           `db:"notnull"`
+	DfltValue sql.NullString `db:"dflt_value"`
+	Pk        int            `db:"pk"`
+}
+
+func getTableInfo(tableName string) []tableInfo {
+	//fmt.Println(tableName)
+	results := []tableInfo{}
+	query := "PRAGMA table_info(" + tableName + ")"
+
+	errQuery := db.Select(&results, query)
+	if errQuery != nil {
+		fmt.Println(errQuery)
+	}
+	//fmt.Println(results)
 	return results
 }
