@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Panel header="Tables">
+		
 			<div v-if="tabledata !== null" class="p-grid">
                 <div class="p-col-fixed" style="max-width: 300px"> 
                     <Listbox v-if="tabledata !== null" v-model="selectedTable" :options="tabledata" @change="getInformation" optionLabel="name" :filter="true"/>
@@ -21,7 +21,7 @@
                 </div>
             </div>
 			<div v-if="tabledata === null" class="p-mb-3 p-text-light">No database selected.</div>
-		</Panel>
+		
 	</div>
 </template>
 
@@ -41,6 +41,7 @@ export default {
 			window.backend.selectTable(this.selectedTable.code).then(result => {
 				this.$emit('headerResult', result.Columns)
 				this.$emit('tableResult', JSON.parse(result.Data))
+				this.$emit('tablePrimary', this.primaryKey)
 			}) 
 			this.$emit('tableName', this.selectedTable.code)
 			this.changeTab(1);
@@ -49,8 +50,7 @@ export default {
 		getInformation() {
 			window.backend.getTableInfo(this.selectedTable.code).then(info => {
 				this.informationData = info;
-				let pk = info.find(x => x.Pk === 1);
-				console.log(pk)
+				this.primaryKey = info.find(x => x.Pk === 1);
 			})
 		}
 	}

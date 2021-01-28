@@ -1,0 +1,1 @@
+start WT --startingDirectory C:\Users\wille\Documents\Dev\PORTFOLIO\golite ; split-pane --startingDirectory C:\Users\wille\Documents\Dev\PORTFOLIO\golite\frontend

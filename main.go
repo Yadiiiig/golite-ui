@@ -35,6 +35,7 @@ func main() {
 	app.Bind(runQuery)
 	app.Bind(getTableInfo)
 	app.Bind(closeDatabase)
+	app.Bind(editField)
 	app.Run()
 }
 
@@ -169,8 +170,7 @@ func selectTable(tableName string) interface{} {
 }
 
 func connectDatabase(path string) *sqlx.DB {
-	var dbCheck *sqlx.DB
-	if dbCheck != db {
+	if db != nil {
 		db.Close()
 	}
 	dbConnection, err := sqlx.Connect("sqlite3", path)
@@ -226,4 +226,18 @@ func getTableInfo(tableName string) []tableInfo {
 	}
 	//fmt.Println(results)
 	return results
+}
+
+func editField(tableName string, primary string, primaryValue string, field string, fieldValue string) string {
+	query := "UPDATE " + tableName + " SET " + field + " = :columnvalue WHERE " + primary + " = :pkvalue"
+	_, err := db.NamedExec(query,
+		map[string]interface{}{
+			"columnvalue": fieldValue,
+			"pkvalue":     primaryValue,
+		})
+	if err != nil {
+		fmt.Println(err)
+		return "nay"
+	}
+	return "yay"
 }

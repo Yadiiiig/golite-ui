@@ -10,7 +10,7 @@
                     <Panel header="Add Fields">
                         <label for="fieldn">Field name </label>
                         <br>
-                        <InputText id="fieldn" type="text" />
+                        <InputText v-model="field_name" type="text" />
                         <br>
                         <div class="p-formgroup-inline">
                             
@@ -18,9 +18,10 @@
                                 <p>Types: </p>
                                 <SelectButton id="types" v-model="selected_type" :options="database_types" optionLabel="name" />
                             </div>
+
                             <div class="p-field">
                                 <p>Constraints:</p>
-                                <SelectButton id="options" v-model="selected_option" :options="database_options" optionLabel="name" :multiple="true" />
+                                <SelectButton id="options" v-model="selected_options" :options="database_options" optionLabel="name" :multiple="true" />
                             </div>
                         </div>
 
@@ -29,12 +30,52 @@
                 </div>
                 <div class="p-col">
                     <Panel header="Preview">
-                        
+
+                        <DataTable :value="fields" class="p-datatable-responsive-demo p-datatable-sm p-datatable-gridlines" :paginator="true" :rows="10">
+                            <Column header="Name">
+                                <template #body="slotProps">
+                                    {{slotProps.data.name}}
+                                </template>
+                            </Column>
+                            <Column header="Type">
+                                <template #body="slotProps">
+                                    {{slotProps.data.type}}
+                                </template>
+                            </Column>
+
+                            <Column header="PK">
+                                <template #body="slotProps">
+                                    <div v-if="slotProps.data.constraints.some(e => e.name === 'PK')">
+                                        Yes
+                                    </div>
+                                </template>
+                            </Column>
+                            <Column header="NN">
+                                <template #body="slotProps">
+                                    <div v-if="slotProps.data.constraints.some(e => e.name === 'NN')">
+                                        Yes
+                                    </div>
+                                </template>
+                            </Column>
+                            <Column header="AI">
+                                <template #body="slotProps">
+                                    <div v-if="slotProps.data.constraints.some(e => e.name === 'AI')">
+                                        Yes
+                                    </div>
+                                </template>
+                            </Column>
+                            <Column header="UN">
+                                <template #body="slotProps">
+                                    <div v-if="slotProps.data.constraints.some(e => e.name === 'UN')">
+                                        Yes
+                                    </div>
+                                </template>
+                            </Column>
+                        </DataTable>
                     </Panel>
                 </div>
-                <Button type="button" label="test" @click="test" />
             </div>
-        
+            <Button type="button" label="test" @click="test" />
             <br>
 		</Panel>	
 	</div>
@@ -45,6 +86,7 @@ export default {
 	name: 'CreateTable',
 	data() {
       	return {
+            field_name: null,
             selected_type: null,
 		    database_types: [
                 {name: 'Integer', value: 'INTEGER'},
@@ -53,25 +95,39 @@ export default {
                 {name: 'Real', value: 'REAL'},
                 {name: 'Numeric', value: 'NUMERIC'}
             ],
-            selected_option: null,
+            selected_options: null,
 		    database_options: [
-                {name: 'Not Null', value: 'NOT NULL'},
-                {name: 'Primary key', value: 'PRIMARY KEY'},
-                {name: 'Auto Increment', value: 'AUTOINCREMENT'},
-                {name: 'Unique', value: 'UNIQUE'},
-                {name: 'Numeric', value: 'NUMERIC'}
+                {name: 'NN', value: 'NOT NULL'},
+                {name: 'PK', value: 'PRIMARY KEY'},
+                {name: 'AI', value: 'AUTOINCREMENT'},
+                {name: 'UN', value: 'UNIQUE'},
             ],
             // Don't forget to clean up those variables
             has_primary_key: false,
+            primary_key: null,
             fields: []
     	}
   	},
 	methods: {	
         addField() {
+            var constrains_array = [];
+            // for (var i = 0; i < this.selected_options.length; i++) {
+            //     this.fields.push({this.selected_options[i].value});
+            // }
 
-            this.has_primary_key = true;
-            let result = this.database_options.map(a => a.value);
-            console.log(result);
+            this.fields.push({
+                "name": this.field_name,
+                "type": this.selected_type.value,
+                "constraints": this.selected_options
+            })
+
+            // if (constrains_array.includes("PRIMARY KEY")) {
+                
+            // }
+            console.log(constrains_array.includes("PRIMARY KEY"))
+            // this.has_primary_key = true;
+            // let result = this.database_options.map(a => a.value);
+            console.log(this.fields);
         },
         test() {
             console.log(this.has_primary_key);

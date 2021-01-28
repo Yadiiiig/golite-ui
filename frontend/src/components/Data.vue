@@ -3,11 +3,11 @@
 		<Panel header="Data">
 			<div v-if="name !== null">
 				<h3>Table: {{ name }}</h3>
-				<DataTable :value="rows" editMode="row" :resizableColumns="true" class="p-datatable-responsive" :editingRows.sync="editingRows"
-        			@row-edit-init="onRowEditInit" @row-edit-cancel="onRowEditCancel" :paginator="true" :rows="10">
+				<DataTable :value="rows" editMode="cell" class="editable-cells-table" :resizableColumns="true" 
+					@cell-edit-init="onCellEditInit" @cell-edit-complete="onCellEditComplete" @cell-edit-cancel="onCellEditCancel" :paginator="true" :rows="10">
 					<Column v-for="(item, index) in fields" :key=index :field="item" :header="item" sortable>
 						<template #editor="slotProps">
-							<InputText v-model="slotProps.data[slotProps.column.field]" autofocus />
+							<InputText v-model="slotProps.data[slotProps.column.field]" />
 						</template>
 					</Column>
 					<Column :rowEditor="true" headerStyle="width:7rem" bodyStyle="text-align:center"></Column>
@@ -21,7 +21,7 @@
 <script>
 export default {
 	name: 'Data',
-	props: ["fields", "rows", "name"],
+	props: ["fields", "rows", "name", "primaryKey"],
 	data() {
       	return {
           	editingRows: [],
@@ -36,13 +36,23 @@ export default {
 			 }) 
         },
 
-		onRowEditInit(event) {
-			console.log(event)
+		onCellEditInit(event) {
             this.originalRows[event.index] = {...this.rows[event.index]};
+			console.log(event, "#############")
+			console.log(this.originalRows)
         },
-        onRowEditCancel(event) {
-            this.products3, event.index, this.rows[event.index];
-        },
+		
+		onCellEditComplete(event) {
+			console.log(this.name, this.primaryKey.Name, event.data[this.primaryKey.Name].toString(), event.field, event.data[event.field].toString())
+			window.backend.editField(this.name, this.primaryKey.Name, event.data[this.primaryKey.Name].toString(), event.field, event.data[event.field].toString()).then(result => {
+				console.log(result)
+			}) 
+		},
+
+		onCellEditCancel(event) {
+			this.$set(this.rows, event.index, this.originalRows[event.index]);
+			console.log(event, "canceled")
+		},
 	},
 }
 </script>

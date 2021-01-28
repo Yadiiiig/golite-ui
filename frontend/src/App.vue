@@ -4,10 +4,10 @@
 		<br>
 		<TabView>
 			<TabPanel header="Structure" :active.sync="active[0]">
-				<TableView :tabledata="tables"  @headerResult="headersChanged($event)" @tableResult="tablesResultChanged($event)" @tableName="getTableName($event)" :changeTab="activate" />
+				<TableView :tabledata="tables"  @headerResult="headersChanged($event)" @tableResult="tablesResultChanged($event)" @tableName="getTableName($event)" @tablePrimary="primaryKeyChanged($event)" :changeTab="activate" />
 			</TabPanel>
 			<TabPanel header="Data" :active.sync="active[1]">
-				<Data :fields="headers" :rows="tablesValues" :name="tableName" />
+				<Data :fields="headers" :rows="tablesValues" :name="tableName" :primaryKey="primaryKey" />
 			</TabPanel>
 			<TabPanel header="SQL-Query" :active.sync="active[2]">
 				<SQLEditor />
@@ -41,6 +41,7 @@ export default {
 			headers: null,
 			tablesValues: null,
 			tableName: null,
+			primaryKey: null,
 			active: [true, false, false]
 		}
 	},
@@ -53,6 +54,9 @@ export default {
 		},
 		tablesResultChanged(e) {
 			this.tablesValues = e;
+		},
+		primaryKeyChanged(e) {
+			this.primaryKey = e;
 		},
 		getTableName(e) {
 			this.tableName = e;
@@ -79,6 +83,7 @@ export default {
 	padding: 0px;
 	margin: 0px;
 	background-color: '#1c1e26';
+	font-size: 1px;
 	}
 
 	#app {

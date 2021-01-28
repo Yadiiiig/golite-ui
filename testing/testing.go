@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
@@ -21,33 +20,65 @@ func main() {
 	db, err := sqlx.Connect("sqlite3", "chinook.db")
 	checkErr(err)
 
-	type headers struct {
-		Cid       string         `db:"cid"`
-		Name      string         `db:"name"`
-		Type      string         `db:"type"`
-		NotNull   int            `db:"notnull"`
-		DfltValue sql.NullString `db:"dflt_value"`
-		Pk        int            `db:"pk"`
+	tableName := "albums"
+	field := "title"
+	fieldValue := "john"
+	primary := "AlbumId"
+	primaryValue := "1"
+
+	//queryTest := "UPDATE " + tableName + " SET " + field + " = '" + fieldValue + "' WHERE " + primary + " = '" + primaryValue + "'"
+	//fmt.Println(queryTest)
+	//query := fmt.Sprint("UPDATE %d SET %d = %d WHERE %d = %d", tableName, field, fieldValue, primary, primaryValue)
+	// _, err = db.NamedExec(`UPDATE :table SET :column = :columnvalue WHERE :pk = :pkvalue`,
+	// 	map[string]interface{}{
+	// 		"table":       tableName,
+	// 		"column":      field,
+	// 		"columnvalue": fieldValue,
+	// 		"pk":          primary,
+	// 		"pkvalue":     primaryValue,
+	// 	})
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+
+	//test := `UPDATE ` + tableName + `SET title = :columnvalue WHERE :pk = :pkvalue`
+
+	test2 := "UPDATE " + tableName + " SET " + field + " = :columnvalue WHERE " + primary + " = :pkvalue"
+	_, err = db.NamedExec(test2,
+		map[string]interface{}{
+			"columnvalue": fieldValue,
+			"pkvalue":     primaryValue,
+		})
+	if err != nil {
+		fmt.Println(err)
 	}
+	// type headers struct {
+	// 	Cid       string         `db:"cid"`
+	// 	Name      string         `db:"name"`
+	// 	Type      string         `db:"type"`
+	// 	NotNull   int            `db:"notnull"`
+	// 	DfltValue sql.NullString `db:"dflt_value"`
+	// 	Pk        int            `db:"pk"`
+	// }
 
-	type tableInfo struct {
-		Cid       int            `db:"cid"`
-		Name      string         `db:"name"`
-		Type      string         `db:"type"`
-		NotNull   bool           `db:"notnull"`
-		DfltValue sql.NullString `db:"dflt_value"`
-		Pk        bool           `db:"pk"`
-	}
+	// type tableInfo struct {
+	// 	Cid       int            `db:"cid"`
+	// 	Name      string         `db:"name"`
+	// 	Type      string         `db:"type"`
+	// 	NotNull   bool           `db:"notnull"`
+	// 	DfltValue sql.NullString `db:"dflt_value"`
+	// 	Pk        bool           `db:"pk"`
+	// }
 
-	results := []tableInfo{}
-	query := "PRAGMA table_info(albums)"
+	// results := []tableInfo{}
+	// query := "PRAGMA table_info(albums)"
 
-	errQuery := db.Select(&results, query)
-	if errQuery != nil {
-		fmt.Println(errQuery)
-	}
+	// errQuery := db.Select(&results, query)
+	// if errQuery != nil {
+	// 	fmt.Println(errQuery)
+	// }
 
-	fmt.Println(results)
+	// fmt.Println(results)
 
 	// results := []headers{}
 	// tableName := "albums"
