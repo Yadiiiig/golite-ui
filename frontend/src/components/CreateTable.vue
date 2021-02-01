@@ -1,83 +1,45 @@
 <template>
 	<div>
-		<Panel header="Create table">
-            <label for="tablen">Table name </label>
-            <br>
-            <InputText id="tablen" type="text" />
-            <hr>
-            <div class="p-grid">
-                <div class="p-col"> 
-                    <Panel header="Add Fields">
-                        <label for="fieldn">Field name </label>
-                        <br>
-                        <InputText v-model="field_name" type="text" />
-                        <br>
-                        <div class="p-formgroup-inline">
-                            
-                            <div class="p-field">
-                                <p>Types: </p>
-                                <SelectButton id="types" v-model="selected_type" :options="database_types" optionLabel="name" />
-                            </div>
-
-                            <div class="p-field">
-                                <p>Constraints:</p>
-                                <SelectButton id="options" v-model="selected_options" :options="database_options" optionLabel="name" :multiple="true" />
-                            </div>
-                        </div>
-
-                        <Button type="button" label="Add Field" @click="addField" />
-                    </Panel>
-                </div>
-                <div class="p-col">
-                    <Panel header="Preview">
-
-                        <DataTable :value="fields" class="p-datatable-responsive-demo p-datatable-sm p-datatable-gridlines" :paginator="true" :rows="10">
-                            <Column header="Name">
-                                <template #body="slotProps">
-                                    {{slotProps.data.name}}
-                                </template>
-                            </Column>
-                            <Column header="Type">
-                                <template #body="slotProps">
-                                    {{slotProps.data.type}}
-                                </template>
-                            </Column>
-
-                            <Column header="PK">
-                                <template #body="slotProps">
-                                    <div v-if="slotProps.data.constraints.some(e => e.name === 'PK')">
-                                        Yes
-                                    </div>
-                                </template>
-                            </Column>
-                            <Column header="NN">
-                                <template #body="slotProps">
-                                    <div v-if="slotProps.data.constraints.some(e => e.name === 'NN')">
-                                        Yes
-                                    </div>
-                                </template>
-                            </Column>
-                            <Column header="AI">
-                                <template #body="slotProps">
-                                    <div v-if="slotProps.data.constraints.some(e => e.name === 'AI')">
-                                        Yes
-                                    </div>
-                                </template>
-                            </Column>
-                            <Column header="UN">
-                                <template #body="slotProps">
-                                    <div v-if="slotProps.data.constraints.some(e => e.name === 'UN')">
-                                        Yes
-                                    </div>
-                                </template>
-                            </Column>
-                        </DataTable>
-                    </Panel>
-                </div>
-            </div>
-            <Button type="button" label="test" @click="test" />
-            <br>
-		</Panel>	
+        <Button type="button" label="Add row" @click="addRow()" />
+        <br>
+        <br>
+        <DataTable :value="fields" class="p-datatable-responsive-demo p-datatable-sm p-datatable-gridlines" :paginator="true" :rows="10">
+            <Column header="Name">
+                <template #body="slotProps">
+                    <InputText type="text" v-model="slotProps.data.name" class="p-inputtext-sm" placeholder="name" />
+                </template>
+            </Column>
+            <Column header="Type">
+                <template #body="slotProps">
+                    <InputText type="text" v-model="slotProps.data.type" class="p-inputtext-sm" placeholder="type" />
+                </template>
+            </Column>
+            <Column header="PK">
+                <template #body="slotProps" style="text-align: center;">
+                    <Checkbox v-model="slotProps.data.PK" @change="saveValue()" :binary="true" />
+                </template>
+            </Column>
+            <Column header="NN">
+                <template #body="slotProps">
+                    <Checkbox v-model="slotProps.data.NN" @change="saveValue()" :binary="true" />
+                </template>
+            </Column>
+            <Column header="AI">
+                <template #body="slotProps">
+                    <Checkbox v-model="slotProps.data.AI" @change="saveValue()" :binary="true" />
+                </template>
+            </Column>
+            <Column header="UN">
+                <template #body="slotProps">
+                    <Checkbox v-model="slotProps.data.UN" @change="saveValue()" :binary="true" />
+                </template>
+            </Column>
+            <Column header="Delete">
+                <template #body="slotProps">
+                    <Button icon="pi pi-trash" iconPos="right"  @click="deleteRow(slotProps.data)" />
+                </template>
+            </Column>
+        </DataTable>
 	</div>
 </template>
 
@@ -105,32 +67,23 @@ export default {
             // Don't forget to clean up those variables
             has_primary_key: false,
             primary_key: null,
-            fields: []
+            //fields: [],
+            fields: [{name: "", type: "", NN: false, PK: false, AI: false, UN: false}],
     	}
   	},
 	methods: {	
-        addField() {
-            var constrains_array = [];
-            // for (var i = 0; i < this.selected_options.length; i++) {
-            //     this.fields.push({this.selected_options[i].value});
-            // }
-
-            this.fields.push({
-                "name": this.field_name,
-                "type": this.selected_type.value,
-                "constraints": this.selected_options
-            })
-
-            // if (constrains_array.includes("PRIMARY KEY")) {
-                
-            // }
-            console.log(constrains_array.includes("PRIMARY KEY"))
-            // this.has_primary_key = true;
-            // let result = this.database_options.map(a => a.value);
-            console.log(this.fields);
+        saveValue() {
+            console.log(JSON.stringify(this.fields))
         },
-        test() {
-            console.log(this.has_primary_key);
+
+        addRow() {
+            this.fields.push({name: "", type: "", NN: false, PK: false, AI: false, UN: false});
+        },
+        
+        deleteRow(prop) {
+            this.fields.splice(this.fields.indexOf(prop), 1);
+            this.fields.splice(this.fields[prop], 1);
+            console.log(JSON.stringify(this.fields))
         }
 	},
 }

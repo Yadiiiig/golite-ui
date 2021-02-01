@@ -22,6 +22,7 @@ import InputText from 'primevue/inputtext';
 import Dropdown from 'primevue/dropdown';
 import SelectButton from 'primevue/selectbutton';
 import Listbox from 'primevue/listbox';
+import Checkbox from 'primevue/checkbox';
 import 'primeflex/primeflex.css';
 
 
@@ -45,6 +46,7 @@ Vue.component('InputText', InputText);
 Vue.component('Dropdown', Dropdown);
 Vue.component('SelectButton', SelectButton);
 Vue.component('Listbox', Listbox);
+Vue.component('Checkbox', Checkbox);
 
 Wails.Init(() => {
 	new Vue({
