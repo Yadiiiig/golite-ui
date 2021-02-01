@@ -81,7 +81,7 @@ export default {
         },
         
         deleteRow(prop) {
-            this.fields.splice(this.fields.indexOf(prop), 1);
+            //this.fields.splice(this.fields.indexOf(prop), 1);
             this.fields.splice(this.fields[prop], 1);
             console.log(JSON.stringify(this.fields))
         }
