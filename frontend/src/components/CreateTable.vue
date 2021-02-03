@@ -40,6 +40,7 @@
                 </template>
             </Column>
         </DataTable>
+        <Button label="Create table"  @click="create()" />
 	</div>
 </template>
 
@@ -68,7 +69,12 @@ export default {
             has_primary_key: false,
             primary_key: null,
             //fields: [],
-            fields: [{name: "", type: "", NN: false, PK: false, AI: false, UN: false}],
+            //fields: [{name: "", type: "", NN: false, PK: false, AI: false, UN: false}],
+            // For testing only
+            fields: [
+                {name: 'ArtistId', type: 'int', NN: true, PK: true, AI: true, UN: true}, 
+                {name: 'ArtistName', type: 'string', NN: true, PK: false, AI: true, UN: true}
+            ]
     	}
   	},
 	methods: {	
@@ -81,9 +87,15 @@ export default {
         },
         
         deleteRow(prop) {
-            //this.fields.splice(this.fields.indexOf(prop), 1);
-            this.fields.splice(this.fields[prop], 1);
+            this.fields.splice(this.fields.indexOf(prop), 1);
+            //this.fields.splice(this.fields[prop], 1);
             console.log(JSON.stringify(this.fields))
+        },
+
+        create() {
+            window.backend.createTable(JSON.stringify(this.fields)).then(result => {
+				console.log(result)
+			}) 
         }
 	},
 }

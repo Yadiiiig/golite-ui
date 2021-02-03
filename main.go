@@ -36,6 +36,7 @@ func main() {
 	app.Bind(getTableInfo)
 	app.Bind(closeDatabase)
 	app.Bind(editField)
+	app.Bind(createTable)
 	app.Run()
 }
 
@@ -240,4 +241,19 @@ func editField(tableName string, primary string, primaryValue string, field stri
 		return "nay"
 	}
 	return "yay"
+}
+
+type createTableStruct struct {
+	Name          string `json:"name"`
+	Type          string `json:"type"`
+	NotNull       bool   `json:"NN"`
+	PrimaryKey    bool   `json:"PK"`
+	AutoIncrement bool   `json:"AI"`
+	Unique        bool   `json:"UN"`
+}
+
+func createTable(tableData string) string {
+	fmt.Println("")
+	fmt.Println(tableData)
+	return "done"
 }
